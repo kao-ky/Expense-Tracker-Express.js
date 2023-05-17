@@ -1,0 +1,14 @@
+<tr>
+    <th scope="row">{{ trx_num }}</th>
+    <td>{{trx_date}}</td>
+    <td>{{trx_desc}}</td>
+    <td>{{currency}}</td>
+    <td>{{amount}}</td>
+    <td>{{payment_method}}</td>
+    <td>{{remark}}</td>
+    <td class="text-end">
+        <form action="/menu/delete-expense" method="POST">
+            <button class="btn btn-danger btn-delete" name="trx_id" value="{{ _id }}">Delete</button>
+        </form>
+    </td>
+</tr>

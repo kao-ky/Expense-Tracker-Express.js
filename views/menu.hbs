@@ -1,0 +1,11 @@
+<h1 class="text-center pb-3">Menu</h1>
+<div class="row w-75 mx-auto">
+    {{#each allMenuFuncs}}
+        <a class="card text-decoration-none text-dark d-inline-block col-12 col-sm-6 col-md-6 p-3" href="{{this.endpoint}}">
+            <img class="mx-auto d-block img-fluid" src="{{this.img}}" alt="{{this.name}} Logo" width="150px">
+            <div class="card-body text-center fw-bold">
+                {{this.name}}
+            </div>
+        </a>
+    {{/each}}
+</div>

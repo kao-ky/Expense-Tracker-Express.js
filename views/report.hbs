@@ -1,0 +1,141 @@
+<div class="col-md-7" id="trx-summary" style="height: 550px;">
+
+    <canvas id="lineChart"></canvas>
+
+    <form class="text-center mt-3" action="/report">
+
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Select Month to View Expense
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><button class="dropdown-item" name="month" value="1">January</button></li>
+            <li><button class="dropdown-item" name="month" value="2">February</button></li>
+            <li><button class="dropdown-item" name="month" value="3">March</button></li>
+            <li><button class="dropdown-item" name="month" value="4">April</button></li>
+            <li><button class="dropdown-item" name="month" value="5">May</button></li>
+            <li><button class="dropdown-item" name="month" value="6">June</button></li>
+            <li><button class="dropdown-item" name="month" value="7">July</button></li>
+            <li><button class="dropdown-item" name="month" value="8">August</button></li>
+            <li><button class="dropdown-item" name="month" value="9">September</button></li>
+            <li><button class="dropdown-item" name="month" value="10">October</button></li>
+            <li><button class="dropdown-item" name="month" value="11">November</button></li>
+            <li><button class="dropdown-item" name="month" value="12">December</button></li>
+        </ul>
+    </div>
+
+    </form>
+</div>
+
+<div class="col-md-5">
+    <div id="goal-summary" style="height: 350px">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <div class="col-md-6 mt-2 overflow-scroll mx-3" style="height:245px; width: 550px">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Transaction</th>
+                    <th scope="col">Currency</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Payment Method</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each allTrxs}}
+                    <tr>
+                        <td>{{this.trx_desc}}</td>
+                        <td>{{this.currency}}</td>
+                        <td>{{this.amount}}</td>
+                        <td>{{this.payment_method}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- change to local later --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    main {
+        display: flex;
+    }
+</style>
+
+<script>
+    const ctx = document.getElementById('lineChart')
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{{ dateData }}],
+            datasets: [
+                {{#each expenseList}}
+                    {
+                        label: "{{ this.currency }}",
+                        data: {{ this.expenses }},
+                        borderWidth: 5
+                    },
+                {{/each}}
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+                title: {
+                    display: true,
+                    text: "Expense Report - {{ month }}",
+                    font: {
+                        size: 25
+                    }
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    })
+
+    const pieChart = document.getElementById('pieChart')
+    const allPaymentMethods = "{{ allPaymentMethods }}"
+    const pieChartLabels = allPaymentMethods.split(",")
+
+    new Chart(pieChart, {
+        type: 'doughnut',
+        data: {
+            labels: pieChartLabels,
+            datasets: [
+                {
+                    label: "Amount",
+                    data: [{{pieChartExpensesInOrder}}],
+                    borderWidth: 5
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Payment Distribution",
+                    font: {
+                        size: 25
+                    }
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    })
+</script>

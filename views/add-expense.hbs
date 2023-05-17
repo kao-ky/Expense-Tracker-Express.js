@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <form class="d-grid gap-3 col-sm-8 col-md-4" action="/menu/add-expense" method="POST">
+        <div class="form-group">
+            <label for="trxDate" class="form-label">Purchase Date</label>
+            <div class="input-group">
+                <input type="date" class="form-control" name="trxDate" id="trxDate" required>
+                <button type="button" class="btn btn-primary px-5" id="btn-today">Today</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="trxDesc" class="form-label">Purchase Description</label>
+            <input type="text" class="form-control" name="trxDesc" id="trxDesc" maxlength="30" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Currency</label>
+            <br>
+            {{#if customMode}}
+                {{#each currencyList}}
+                    <input type="radio" class="btn-check" name="currency" id="currency-{{ currency }}" value="{{ currency }}" required>
+                    <label class="btn btn-outline-primary px-4" for="currency-{{ currency }}">{{ currency }}</label>
+                {{/each}}
+            {{else}}
+                <input type="radio" class="btn-check" name="currency" id="currency-CAD" value="CAD" required>
+                <label class="btn btn-outline-primary px-4" for="currency-CAD">CAD</label>
+                <input type="radio" class="btn-check" name="currency" id="currency-HKD" value="HKD">
+                <label class="btn btn-outline-primary px-4" for="currency-HKD">HKD</label>
+                <input type="radio" class="btn-check" name="currency" id="currency-USD" value="USD">
+                <label class="btn btn-outline-primary px-4" for="currency-USD">USD</label>
+            {{/if}}
+        </div>
+
+        <div class="form-group">
+            <label for="amount" class="form-label">Amount</label>
+            <div class="input-group">
+                <span class="input-group-text" id="currency-addon">$</span>
+                <input type="Number" class="form-control" name="amount" id="amount" step="0.01" min="0" placeholder="0.00" aria-describedby="currency-addon" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="payment-method" class="form-label">Payment Method</label>
+            <br>
+            {{#if customMode}}
+                {{#each paymentMethodList}}
+                    <input type="radio" class="btn-check" name="paymentMethod" id="payment-{{ paymentMethod }}" value="{{ paymentMethod }}" required>
+                    <label class="btn btn-outline-primary px-4" for="payment-{{ paymentMethod }}">{{ paymentMethod }}</label>
+                {{/each}}
+            {{else}}
+                <input type="radio" class="btn-check" name="paymentMethod" id="payment-cash" value="Cash" required>
+                <label class="btn btn-outline-primary px-4" for="payment-cash">Cash</label>
+                <input type="radio" class="btn-check" name="paymentMethod" id="payment-credit-card" value="Credit Card">
+                <label class="btn btn-outline-primary px-4" for="payment-credit-card">Credit Card</label>
+                <input type="radio" class="btn-check" name="paymentMethod" id="payment-debit-card" value="Debit Card">
+                <label class="btn btn-outline-primary px-4" for="payment-debit-card">Debit Card</label>
+            {{/if}}
+        </div>
+
+        <div class="">
+            <label for="remark" class="form-label">Remark</label>
+            <textarea class="form-control" name="remark" id="remark" rows="1" maxlength="30"></textarea>
+        </div>
+
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>

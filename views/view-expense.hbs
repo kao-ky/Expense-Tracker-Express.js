@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-between">
+    <a class="btn btn-secondary my-auto" href="/menu">Back</a>
+    <h2 class="text-center d-inline m-auto">All Expenses</h2>
+    <h6 class="my-auto p-2 border border-secondary">{{trxNum}} Records</h6>
+</div>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th scope="col">Record</th>
+            <th scope="col">Transaction Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Currency</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Remark</th>
+            <th scope="col" class="text-end"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <form id="allTrxs" action="/menu/delete-transaction" method="POST"></form>
+        {{#each allTrxs}}
+            {{> expense this trx_num=( inc (sum (times (min ../currPage 1) 10) @index) )}}
+        {{/each}}
+        </form>
+    </tbody>
+</table>
+
+<nav aria-label="pagination">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            {{#if PREVIOUS_TEN_PAGES_START}}
+                <a class="page-link" href="/menu/view-expense?page={{ PREVIOUS_TEN_PAGES_START }}" aria-label="previous">
+            {{else}}
+                {{!-- Previous 10 pages --}}
+                <a class="page-link disabled" aria-label="previous">
+            {{/if}}
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li class="page-item">
+            {{#unless (equals currPage 1)}}
+                <a class="page-link" href="/menu/view-expense?page={{ min currPage 1 }}" aria-label="next">
+                    <span aria-hidden="true">Back</span>
+                </a>
+            {{/unless}}
+        </li>
+
+        {{#if (lt maxPage 10)}}
+            {{#loop 10}}
+                {{#if (equals (mod (inc this) 10) (mod ../currPage 10))}}
+                    <li class="page-item active">
+                        <a class="page-link" href="/menu/view-expense?page={{ sum (min ../NEXT_TEN_PAGES_START 10) this }}">{{ sum (min ../NEXT_TEN_PAGES_START 10) this }}</a>
+                    </li>
+                {{else}}
+                    <li class="page-item">
+                        <a class="page-link" href="/menu/view-expense?page={{ sum (min ../NEXT_TEN_PAGES_START 10) this }}">{{ sum (min ../NEXT_TEN_PAGES_START 10) this }}</a>
+                    </li>
+                {{/if}}
+            {{/loop}}
+        {{else}}
+            {{#loop maxPage}}
+                {{#if (equals (inc this) ../currPage)}}
+                    <li class="page-item active">
+                        <a class="page-link" href="/menu/view-expense?page={{ sum 1 this }}">{{ sum 1 this }}</a>
+                    </li>
+                {{else}}
+                    <li class="page-item">
+                        <a class="page-link" href="/menu/view-expense?page={{ sum 1 this }}">{{ sum 1 this }}</a>
+                    </li>
+                {{/if}}
+            {{/loop}}
+        {{/if}}
+
+        <li class="page-item">
+            {{#unless (equals currPage maxPage)}}
+                <a class="page-link" href="/menu/view-expense?page={{ inc currPage }}" aria-label="next">
+                    <span aria-hidden="true">Next</span>
+                </a>
+            {{/unless}}
+        </li>
+
+        <li class="page-item">
+            {{#if NEXT_TEN_PAGES_START}}
+                <a class="page-link" href="/menu/view-expense?page={{ NEXT_TEN_PAGES_START }}" aria-label="next">
+            {{else}}
+                <a class="page-link disabled" aria-label="next">
+            {{/if}}
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
