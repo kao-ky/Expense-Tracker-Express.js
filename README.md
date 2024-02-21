@@ -1,4 +1,4 @@
-# iExpense - Express.js
+# Expense Tracker - Express.js
 
 A mini project written in Node.JS that performs CRUD actions on expense management with Express and MongoDB.
 
